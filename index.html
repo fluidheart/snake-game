@@ -143,6 +143,7 @@
     // ============ 常量 ============
     const GRID = 25;           // 25×25 格子
     const SPEEDS = { slow: 200, normal: 150, fast: 80 };
+    let started = false;      // 等待玩家按下方向键才开始
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -177,12 +178,13 @@
       direction = { x: 1, y: 0 };
       nextDirection = { x: 1, y: 0 };
       snake = [
-        { x: 5, y: 10 },
-        { x: 4, y: 10 },
-        { x: 3, y: 10 },
+        { x: 12, y: 12 },
+        { x: 11, y: 12 },
+        { x: 10, y: 12 },
       ];
       score = 0;
       gameOver = false;
+      started = false;
       particles = [];
       scoreEl.textContent = '0';
       spawnFood();
@@ -237,6 +239,9 @@
         updateParticles();
         return;
       }
+
+      // 等待玩家开始
+      if (!started) return;
 
       // 应用方向
       direction = { ...nextDirection };
@@ -417,12 +422,26 @@
       ctx.textAlign = 'start';
     }
 
+    function drawStartHint() {
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00e676';
+      ctx.font = `bold ${cellSize * 1.2}px "PingFang SC","Microsoft YaHei","Segoe UI",sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('🐍 贪吃蛇', canvas.width / 2, canvas.height / 2 - cellSize * 1.2);
+      ctx.fillStyle = '#aaa';
+      ctx.font = `${cellSize * 0.58}px "PingFang SC","Microsoft YaHei","Segoe UI",sans-serif`;
+      ctx.fillText('按方向键开始游戏', canvas.width / 2, canvas.height / 2 + cellSize * 0.6);
+      ctx.textAlign = 'start';
+    }
+
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGrid();
       drawFood();
       drawSnake();
       drawParticles();
+      if (!started && !gameOver) drawStartHint();
       if (gameOver && snake.length > 0) drawGameOver();
     }
 
@@ -458,6 +477,7 @@
       // 禁止反向
       if (direction.x === -dx && direction.y === -dy && snake.length > 1) return;
       nextDirection = { x: dx, y: dy };
+      started = true;
     }
 
     document.addEventListener('keydown', (e) => {
