@@ -446,13 +446,14 @@
     }
 
     // ============ 游戏循环 ============
+
+    // RAF 只负责渲染，逻辑更新由 setInterval 控制节奏
     function loop() {
-      update();
       render();
       gameLoop = requestAnimationFrame(loop);
     }
 
-    // 使用 setInterval 控制速度 + RAF 渲染
+    // 使用 setInterval 控制游戏逻辑更新速度
     let ticker;
     function startTicker() {
       clearInterval(ticker);
