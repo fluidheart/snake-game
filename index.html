@@ -141,8 +141,8 @@
 <script>
   (function () {
     // ============ 常量 ============
-    const GRID = 20;           // 20×20 格子
-    const SPEEDS = { slow: 150, normal: 100, fast: 60 };
+    const GRID = 25;           // 25×25 格子
+    const SPEEDS = { slow: 200, normal: 150, fast: 80 };
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -162,8 +162,8 @@
 
     // ============ Canvas 尺寸 ============
     function resize() {
-      const maxW = Math.min(500, window.innerWidth - 32);
-      const maxH = Math.min(500, window.innerHeight - 280);
+      const maxW = Math.min(600, window.innerWidth - 32);
+      const maxH = Math.min(600, window.innerHeight - 280);
       const size = Math.min(maxW, maxH);
       gridSize = Math.floor(size / GRID);
       cellSize = gridSize;
